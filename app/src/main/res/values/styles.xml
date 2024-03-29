@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="big_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">#ffffff</item>
+        <item name="android:fontFamily">@font/display_medium</item>
+        <item name="android:textColor">#1A1B22</item>
+        <item name="android:textSize">22sp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconTint">@color/black</item>
+        <item name="cornerRadius">20dp</item>
+
+    </style>
+</resources>
