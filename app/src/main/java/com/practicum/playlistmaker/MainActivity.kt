@@ -12,23 +12,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button1 = findViewById<Button>(R.id.button1) //кнопка поиск
-        val button2 = findViewById<Button>(R.id.button2) //кнопка медиатека
-        val button3 = findViewById<Button>(R.id.button3) //кнопка настройки
+        val searchButton = findViewById<Button>(R.id.search_button)
+        val mediatekaButton = findViewById<Button>(R.id.mediateka_button)
+        val settingsButton = findViewById<Button>(R.id.settings_button)
 
-        button1.setOnClickListener {
-            val button1Intent = Intent(this, SearchActivity::class.java)
-            startActivity(button1Intent)
+        searchButton.setOnClickListener {
+            val searchButtonIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchButtonIntent)
         }
 
-        button2.setOnClickListener {
-            val button2Intent = Intent(this, MediaLibraryActivity::class.java)
-            startActivity(button2Intent)
+        mediatekaButton.setOnClickListener {
+            val mediatekaButtonIntent = Intent(this, MediaLibraryActivity::class.java)
+            startActivity(mediatekaButtonIntent)
         }
 
-        button3.setOnClickListener {
-            val button3Intent = Intent(this, SettingsActivity::class.java)
-            startActivity(button3Intent)
+        settingsButton.setOnClickListener {
+            val settingsButtonIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsButtonIntent)
         }
     }
 }

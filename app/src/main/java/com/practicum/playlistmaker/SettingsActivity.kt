@@ -12,8 +12,6 @@ class SettingsActivity : AppCompatActivity() {
         //обработчик нажатия кнопки "Назад" в меню настройки, для перехода на главный экран.
         val arrow = findViewById<Button>(R.id.arrow)
         arrow.setOnClickListener {
-            val arrowIntent = Intent(this, MainActivity::class.java)
-            startActivity(arrowIntent)
             finish()
         }
     }

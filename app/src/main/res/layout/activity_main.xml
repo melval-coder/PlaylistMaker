@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3772E2"
+    android:background="@color/face"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -18,19 +18,19 @@
         android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/search_button"
         style="@style/big_button"
         android:text="@string/search"
         app:icon="@drawable/icon_search" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/mediateka_button"
         android:text="@string/media_library"
         app:icon="@drawable/icon_media"
         style="@style/big_button" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/settings_button"
         android:text="@string/settings"
         app:icon="@drawable/icon_settings"
         style="@style/big_button" />

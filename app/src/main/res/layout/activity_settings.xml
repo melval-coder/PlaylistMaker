@@ -15,17 +15,18 @@
             android:id="@+id/arrow"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
+            android:background="@android:color/transparent"
             app:icon="@drawable/icon_arrow"
             app:iconTint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:fontFamily="@font/display_regular"
+            android:gravity="center_vertical"
             android:text="@string/settings"
             android:textColor="#1A1B22"
-            android:textSize="22sp"
-            android:fontFamily="@font/display_regular" />
+            android:textSize="22sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,12 +39,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/white"
+            android:background="@android:color/transparent"
             android:text="@string/dark_theme"
-            android:textAllCaps="false"
-            android:gravity="center_vertical"
-            android:fontFamily="@font/display_regular"
-            android:textColor="@color/black" />
+            style="@style/settings_button" />
 
         <Switch
             android:id="@+id/off"
@@ -54,44 +52,20 @@
 
     <Button
         android:id="@+id/share"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:text="@string/share_the_app"
-        android:textAllCaps="false"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/display_regular"
-        android:textColor="@color/black"
         app:icon="@drawable/icon_share"
-        app:iconGravity="end"
-        app:iconTint="@color/icon_color" />
+        style="@style/settings_button" />
 
     <Button
         android:id="@+id/group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:text="@string/write_to_support"
-        android:textAllCaps="false"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/display_regular"
-        android:textColor="@color/black"
         app:icon="@drawable/icon_group"
-        app:iconGravity="end"
-        app:iconTint="@color/icon_color" />
+        style="@style/settings_button" />
 
     <Button
         android:id="@+id/agreement"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:text="@string/user_agreement"
-        android:textAllCaps="false"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/display_regular"
-        android:textColor="@color/black"
         app:icon="@drawable/icon_agreement"
-        app:iconGravity="end"
-        app:iconTint="@color/icon_color" />
+        style="@style/settings_button" />
 
 </LinearLayout>
