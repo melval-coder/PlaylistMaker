@@ -13,7 +13,7 @@
         android:layout_gravity="start"
         android:text="@string/app_name"
         android:fontFamily="@font/display_medium"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:layout_marginBottom="16dp" />
 
