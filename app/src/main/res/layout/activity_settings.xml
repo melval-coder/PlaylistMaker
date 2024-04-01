@@ -25,7 +25,7 @@
             android:fontFamily="@font/display_regular"
             android:gravity="center_vertical"
             android:text="@string/settings"
-            android:textColor="@color/textColor"
+            android:textColor="#1A1B22"
             android:textSize="22sp" />
     </LinearLayout>
 
