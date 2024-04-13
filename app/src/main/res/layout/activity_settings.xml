@@ -6,42 +6,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout style="@style/linear_style">
 
-        <Button
-            android:id="@+id/arrow"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:icon="@drawable/icon_arrow"
-            app:iconTint="@color/black" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:fontFamily="@font/display_regular"
-            android:gravity="center_vertical"
-            android:text="@string/settings"
-            android:textColor="@color/textColor"
-            android:textSize="22sp" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            app:title="@string/settings"
+            style="@style/toolbar_settings_style" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <LinearLayout style="@style/linear_style"
         android:layout_marginTop="8dp">
 
         <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
             android:text="@string/dark_theme"
-            style="@style/settings_button" />
+            style="@style/settingsButton" />
 
         <Switch
             android:id="@+id/off"
@@ -54,18 +34,18 @@
         android:id="@+id/share"
         android:text="@string/share_the_app"
         app:icon="@drawable/icon_share"
-        style="@style/settings_button" />
+        style="@style/settingsButton" />
 
     <Button
         android:id="@+id/group"
         android:text="@string/write_to_support"
         app:icon="@drawable/icon_group"
-        style="@style/settings_button" />
+        style="@style/settingsButton" />
 
     <Button
         android:id="@+id/agreement"
         android:text="@string/user_agreement"
         app:icon="@drawable/icon_agreement"
-        style="@style/settings_button" />
+        style="@style/settingsButton" />
 
 </LinearLayout>

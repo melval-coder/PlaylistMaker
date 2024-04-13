@@ -1,38 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/face"
-    android:orientation="vertical"
-    android:padding="16dp">
+    style="@style/home_screen">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
         android:text="@string/app_name"
-        android:fontFamily="@font/display_medium"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:layout_marginBottom="16dp" />
+        style="@style/playlistMakerStyle" />
 
     <Button
-        android:id="@+id/search_button"
-        style="@style/big_button"
+        android:id="@+id/searchButton"
         android:text="@string/search"
-        app:icon="@drawable/icon_search" />
+        app:icon="@drawable/icon_search"
+        style="@style/bigButton" />
 
     <Button
-        android:id="@+id/mediateka_button"
+        android:id="@+id/mediatekaButton"
         android:text="@string/media_library"
         app:icon="@drawable/icon_media"
-        style="@style/big_button" />
+        style="@style/bigButton" />
 
     <Button
-        android:id="@+id/settings_button"
+        android:id="@+id/settingsButton"
+        style="@style/bigButton"
         android:text="@string/settings"
-        app:icon="@drawable/icon_settings"
-        style="@style/big_button" />
+        app:icon="@drawable/icon_settings" />
 
 </LinearLayout>
