@@ -27,7 +27,7 @@
 
         <ImageView
             android:id="@+id/clearIcon"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/icon_clear"
             style="@style/clearIconStyle" />
 
     </FrameLayout>

@@ -10,10 +10,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
 
-    companion object {
+    private companion object {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
     }
 
@@ -39,11 +40,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.isNotEmpty() == true) {
-                    clearIcon.visibility = View.VISIBLE
-                } else {
-                    clearIcon.visibility = View.GONE
-                }
+                clearIcon.isVisible = s?.isNotEmpty() == true
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -53,7 +50,7 @@ class SearchActivity : AppCompatActivity() {
         clearIcon.setOnClickListener {
             if (searchEditText.text.isNotEmpty()) {
                 searchEditText.setText("") // Очистить текстовое поле
-                clearIcon.visibility = View.GONE // Скрыть кнопку "Очистить поисковый запрос"
+                clearIcon.isVisible = false // Скрыть кнопку "Очистить поисковый запрос"
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(searchEditText.windowToken, 0) // Скрыть клавиатуру
             }
