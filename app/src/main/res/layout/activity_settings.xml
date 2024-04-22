@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout style="@style/linear_style">
+    <LinearLayout style="@style/linearHorizontalStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             app:title="@string/settings"
-            style="@style/toolbar_settings_style" />
+            style="@style/toolbarSettingsStyle" />
     </LinearLayout>
 
-    <LinearLayout style="@style/linear_style"
+    <LinearLayout style="@style/linearHorizontalStyle"
         android:layout_marginTop="8dp">
 
         <Button

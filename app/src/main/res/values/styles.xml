@@ -39,7 +39,7 @@
         <item name="android:layout_marginBottom">16dp</item>
     </style>
 
-    <style name="home_screen">
+    <style name="homeScreen">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/blue</item>
@@ -47,13 +47,13 @@
         <item name="android:padding">16dp</item>
     </style>
 
-    <style name="linear_style">
+    <style name="linearHorizontalStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="toolbar_settings_style">
+    <style name="toolbarSettingsStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/white</item>
@@ -85,5 +85,80 @@
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:backgroundTint">@color/marble</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="ImageViewShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">2dp</item>
+        <item name="backgroundTint">@color/black</item>
+    </style>
+
+    <style name="recyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="placeholderStyle">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="arrowForwardStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="tint">@color/aluminium</item>
+    </style>
+
+    <style name="ellipseStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:layout_gravity">fill_horizontal</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/aluminium</item>
+    </style>
+
+    <style name="artistStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">fill_horizontal</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/aluminium</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="trackTitleStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:baselineAligned">false</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="linearTrackItemsStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginVertical">14dp</item>
+    </style>
+
+    <style name="linearVerticalStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
     </style>
 </resources>

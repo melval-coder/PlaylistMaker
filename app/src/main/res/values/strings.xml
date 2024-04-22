@@ -12,5 +12,7 @@
     <string name="practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="course_android_development">https://practicum.yandex.ru/profile/android-developer/</string>
     <string name="my_email">val2567@yandex.ru</string>
-
+    <string name="artist">No name artist</string>
+    <string name="track_time">00:00</string>
+    <string name="track_title">No Raply</string>
 </resources>
