@@ -13,10 +13,7 @@
 
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_margin="16dp">
+    <FrameLayout style="@style/frameSearchStyle">
 
         <EditText
             android:id="@+id/searchEditText"
@@ -32,9 +29,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearch"
+        style="@style/recyclerViewStyle"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/track_items"
         tools:itemCount="3"
-        style="@style/recyclerViewStyle" />
+        tools:listitem="@layout/track_items" />
 
 </LinearLayout>
