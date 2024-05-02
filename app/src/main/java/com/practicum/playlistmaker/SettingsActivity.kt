@@ -11,6 +11,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+ dev
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -48,6 +49,8 @@ class SettingsActivity : AppCompatActivity() {
             val userAgreement = getString(R.string.practicum_offer)
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userAgreement))
             startActivity(agreementIntent)
+
+ master
         }
     }
 }

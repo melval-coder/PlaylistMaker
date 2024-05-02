@@ -8,10 +8,29 @@
 
     <LinearLayout style="@style/linearHorizontalStyle">
 
+ dev
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             app:title="@string/settings"
             style="@style/toolbarSettingsStyle" />
+
+        <Button
+            android:id="@+id/arrow"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:icon="@drawable/icon_arrow"
+            app:iconTint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:fontFamily="@font/display_regular"
+            android:gravity="center_vertical"
+            android:text="@string/settings"
+            android:textColor="@color/textColor"
+            android:textSize="22sp" />
+ master
     </LinearLayout>
 
     <LinearLayout style="@style/linearHorizontalStyle"
@@ -20,8 +39,12 @@
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
+ dev
             android:text="@string/dark_theme"
             style="@style/settingsButton" />
+
+            
+ master
 
         <Switch
             android:id="@+id/off"
@@ -34,18 +57,30 @@
         android:id="@+id/share"
         android:text="@string/share_the_app"
         app:icon="@drawable/icon_share"
+ dev
         style="@style/settingsButton" />
+
+        
+ master
 
     <Button
         android:id="@+id/group"
         android:text="@string/write_to_support"
         app:icon="@drawable/icon_group"
+ dev
         style="@style/settingsButton" />
+
+        
+ master
 
     <Button
         android:id="@+id/agreement"
         android:text="@string/user_agreement"
         app:icon="@drawable/icon_agreement"
+ dev
         style="@style/settingsButton" />
+
+        
+ master
 
 </LinearLayout>
