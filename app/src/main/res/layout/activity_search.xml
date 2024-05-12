@@ -22,16 +22,40 @@
 
         <ImageView
             android:id="@+id/clearIcon"
-            android:src="@drawable/icon_clear"
             style="@style/clearIconStyle" />
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearch"
-        style="@style/recyclerViewStyle"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/track_items" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSearch"
+            style="@style/recyclerViewStyle"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/track_items" />
+
+        <LinearLayout
+            android:id="@+id/placeholder"
+            style="@style/linearPlaceholderStyle">
+
+            <ImageView
+                android:id="@+id/placeholderImage"
+                style="@style/imagePlaceholderStyle" />
+
+            <TextView
+                android:id="@+id/placeholderText"
+                style="@style/textPlaceholderStyle" />
+
+            <Button
+                android:id="@+id/repeatButton"
+                android:visibility="gone"
+                android:text="@string/repeat"
+                style="@style/buttonPlaceholderStyle" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

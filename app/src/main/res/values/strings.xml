@@ -15,4 +15,7 @@
     <string name="artist">No name artist</string>
     <string name="track_time">00:00</string>
     <string name="track_title">No Raply</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="no_internet_connection"> Проблемы со связью \n\ \n\ Загрузка не удалась.Проверьте \n\ подключение к интернету</string>
+    <string name="repeat">Обновить</string>
 </resources>
