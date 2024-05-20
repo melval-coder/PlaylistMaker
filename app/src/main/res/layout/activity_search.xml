@@ -26,14 +26,13 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <FrameLayout style="@style/layoutMatchStyle">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSearch"
             style="@style/recyclerViewStyle"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
             tools:listitem="@layout/track_items" />
 
         <LinearLayout
@@ -50,11 +49,36 @@
 
             <Button
                 android:id="@+id/repeatButton"
-                android:visibility="gone"
                 android:text="@string/repeat"
-                style="@style/buttonPlaceholderStyle" />
+                style="@style/buttonPlaceholderStyle"
+                android:visibility="gone" />
 
         </LinearLayout>
+        <androidx.core.widget.NestedScrollView
+            style="@style/matchWrapStyle">
+
+            <LinearLayout
+                android:id="@+id/historySearch"
+                style="@style/linearVerticalStyle"
+                android:visibility="gone">
+
+                <TextView
+                    android:text="@string/you_search"
+                    style="@style/textStyle" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/historySearchList"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/track_items"
+                    style="@style/matchWrapVerticalStyle" />
+
+                <Button
+                    android:id="@+id/clearHistoryButton"
+                    android:text="@string/clear_history"
+                    style="@style/clearHistoryButtonStyle" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
 

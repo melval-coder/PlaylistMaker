@@ -1,6 +1,8 @@
 package com.practicum.playlistmaker
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
@@ -32,18 +34,22 @@ class SearchActivity : AppCompatActivity() {
     private var text: String = ""
     private val itunesBaseUrl = "https://itunes.apple.com"
     private val retrofit =
-        Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
+        Retrofit.Builder()
+            .baseUrl(itunesBaseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-
+    private val searchHistory = SearchHistory()
     private val itunesService = retrofit.create(SearchAPI::class.java)
     private lateinit var searchEditText: EditText
     private lateinit var placeholder: LinearLayout
     private lateinit var searchList: RecyclerView
-
+    private lateinit var sharedPreferences: SharedPreferences
     private val tracks = ArrayList<Track>()
-    private val adapter = SearchAdapter(tracks)
+    private val adapter = SearchAdapter(tracks) {
+        searchHistory.setTrack(it, sharedPreferences)
+    }
 
-
+    @SuppressLint("NotifyDataSetChanged", "WrongViewCast", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -57,9 +63,13 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
         searchEditText = findViewById(R.id.searchEditText)
         searchList = findViewById(R.id.recyclerViewSearch)
         placeholder = findViewById(R.id.placeholder)
+        val historyList = findViewById<RecyclerView>(R.id.historySearchList)
+        val hintMessage = findViewById<LinearLayout>(R.id.historySearch)
+        val clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
         val searchList = findViewById<RecyclerView>(R.id.recyclerViewSearch)
         searchList.adapter = adapter
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
@@ -83,11 +93,29 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearIcon.isVisible = s?.isNotEmpty() == true
+                hintMessage.visibility =
+                    if (searchEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
             }
 
             override fun afterTextChanged(s: Editable?) {
             }
         })
+        // При изменении фокуса на searchEditText отображается подсказка, если поле пустое и есть история поиска
+        searchEditText.setOnFocusChangeListener { _, hasFocus ->
+            hintMessage.visibility =
+                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read(
+                        sharedPreferences
+                    )
+                        .isNotEmpty()
+                ) View.VISIBLE else View.GONE
+            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+        }
+        // Обработчик нажатия кнопки для очистки истории поиска и скрытия подсказки
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clear(sharedPreferences)
+            hintMessage.visibility = View.GONE
+        }
 
         clearIcon.setOnClickListener {
             if (searchEditText.text.isNotEmpty()) {
@@ -105,6 +133,7 @@ class SearchActivity : AppCompatActivity() {
     private fun search() {
         itunesService.search(searchEditText.text.toString())
             .enqueue(object : Callback<TrackResponse> {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TrackResponse>, response: Response<TrackResponse>
                 ) {
@@ -123,13 +152,11 @@ class SearchActivity : AppCompatActivity() {
                             InputStatus.ERROR
                         )
                     }
-
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     showMessage(InputStatus.ERROR)
                 }
-
             })
     }
 
@@ -143,7 +170,7 @@ class SearchActivity : AppCompatActivity() {
         text = savedInstanceState.getString(INPUT_EDIT_TEXT).toString()
     }
 
-
+    @SuppressLint("NotifyDataSetChanged")
     private fun showMessage(status: InputStatus) {
         val buttonRepeat = findViewById<Button>(R.id.repeatButton)
         val textMessage = findViewById<TextView>(R.id.placeholderText)
