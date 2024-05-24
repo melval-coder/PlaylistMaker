@@ -93,8 +93,12 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearIcon.isVisible = s?.isNotEmpty() == true
-                hintMessage.visibility =
-                    if (searchEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                if (searchEditText.hasFocus() && s?.isEmpty() == true) {
+                    showMessage(InputStatus.SUCCESS)
+                    if (searchHistory.read(sharedPreferences).isNotEmpty()) hintMessage.visibility =View.VISIBLE
+                } else{
+                    hintMessage.visibility =View.GONE
+                }
                 historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
             }
 
@@ -104,11 +108,8 @@ class SearchActivity : AppCompatActivity() {
         // При изменении фокуса на searchEditText отображается подсказка, если поле пустое и есть история поиска
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             hintMessage.visibility =
-                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read(
-                        sharedPreferences
-                    )
-                        .isNotEmpty()
-                ) View.VISIBLE else View.GONE
+                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read(sharedPreferences)
+                        .isNotEmpty()) View.VISIBLE else View.GONE
             historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
         }
         // Обработчик нажатия кнопки для очистки истории поиска и скрытия подсказки

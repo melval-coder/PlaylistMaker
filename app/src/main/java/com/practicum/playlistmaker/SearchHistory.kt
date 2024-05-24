@@ -21,7 +21,7 @@ class SearchHistory {
     // Метод для чтения истории треков из SharedPreferences
     fun read(sharedPreferences: SharedPreferences): MutableList<Track> {
         val json = sharedPreferences.getString(TRACKS_KEY, null) ?: return mutableListOf()
-        val listOfMyClassObject: Type = object : TypeToken<ArrayList<Track>?>() {}.type
+        val listOfMyClassObject: Type = object : TypeToken<ArrayList<Track>>() {}.type
         return Gson().fromJson(json, listOfMyClassObject)
     }
 
