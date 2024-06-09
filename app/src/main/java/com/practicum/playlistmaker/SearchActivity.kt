@@ -2,6 +2,7 @@ package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -38,7 +39,9 @@ class SearchActivity : AppCompatActivity() {
             .baseUrl(itunesBaseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    private val searchHistory = SearchHistory()
+    private val searchHistory by lazy {
+        SearchHistory(this)
+    }
     private val itunesService = retrofit.create(SearchAPI::class.java)
     private lateinit var searchEditText: EditText
     private lateinit var placeholder: LinearLayout
@@ -46,7 +49,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val tracks = ArrayList<Track>()
     private val adapter = SearchAdapter(tracks) {
-        searchHistory.setTrack(it, sharedPreferences)
+        searchHistory.setTrack(it)
+        val displayIntent = Intent(this, AudioPlayerActivity::class.java)
+        startActivity(displayIntent)
     }
 
     @SuppressLint("NotifyDataSetChanged", "WrongViewCast", "MissingInflatedId")
@@ -95,11 +100,15 @@ class SearchActivity : AppCompatActivity() {
                 clearIcon.isVisible = s?.isNotEmpty() == true
                 if (searchEditText.hasFocus() && s?.isEmpty() == true) {
                     showMessage(InputStatus.SUCCESS)
-                    if (searchHistory.read(sharedPreferences).isNotEmpty()) hintMessage.visibility =View.VISIBLE
+                    if (searchHistory.read().isNotEmpty()) hintMessage.visibility =View.VISIBLE
                 } else{
                     hintMessage.visibility =View.GONE
                 }
-                historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+                historyList.adapter = SearchAdapter(searchHistory.read()) {
+                    searchHistory.setTrack(it)
+                    val displayIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+                    startActivity(displayIntent)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -108,9 +117,13 @@ class SearchActivity : AppCompatActivity() {
         // При изменении фокуса на searchEditText отображается подсказка, если поле пустое и есть история поиска
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             hintMessage.visibility =
-                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read(sharedPreferences)
+                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read()
                         .isNotEmpty()) View.VISIBLE else View.GONE
-            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+            historyList.adapter = SearchAdapter(searchHistory.read()) {
+                searchHistory.setTrack(it)
+                val displayIntent = Intent(this, AudioPlayerActivity::class.java)
+                startActivity(displayIntent)
+            }
         }
         // Обработчик нажатия кнопки для очистки истории поиска и скрытия подсказки
         clearHistoryButton.setOnClickListener {
