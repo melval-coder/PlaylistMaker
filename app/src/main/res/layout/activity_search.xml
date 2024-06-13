@@ -26,6 +26,12 @@
 
     </FrameLayout>
 
+    <ProgressBar android:id="@+id/progressBar"
+        style="@style/imagePlaceholderStyle"
+        android:layout_marginTop="@dimen/a_148dp"
+        android:indeterminateTint="@color/violet"
+        android:visibility="gone"/>
+
     <FrameLayout style="@style/layoutMatchStyle">
 
         <androidx.recyclerview.widget.RecyclerView

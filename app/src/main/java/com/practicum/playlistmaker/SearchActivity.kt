@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -30,6 +33,13 @@ class SearchActivity : AppCompatActivity() {
 
     private companion object {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+
+        fun startActivity(context: Context) {
+            val intent = Intent(context, SearchActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 
     private var text: String = ""
@@ -42,16 +52,21 @@ class SearchActivity : AppCompatActivity() {
     private val searchHistory by lazy {
         SearchHistory(this)
     }
+    private val searchRunnable = Runnable { search() }
+    private val handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
     private val itunesService = retrofit.create(SearchAPI::class.java)
     private lateinit var searchEditText: EditText
     private lateinit var placeholder: LinearLayout
     private lateinit var searchList: RecyclerView
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var progressBar: ProgressBar
     private val tracks = ArrayList<Track>()
     private val adapter = SearchAdapter(tracks) {
-        searchHistory.setTrack(it)
-        val displayIntent = Intent(this, AudioPlayerActivity::class.java)
-        startActivity(displayIntent)
+        if (clickDebounce()) {
+            searchHistory.setTrack(it)
+            AudioPlayerActivity.startActivity(this)
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged", "WrongViewCast", "MissingInflatedId")
@@ -72,6 +87,7 @@ class SearchActivity : AppCompatActivity() {
         searchEditText = findViewById(R.id.searchEditText)
         searchList = findViewById(R.id.recyclerViewSearch)
         placeholder = findViewById(R.id.placeholder)
+        progressBar = findViewById(R.id.progressBar)
         val historyList = findViewById<RecyclerView>(R.id.historySearchList)
         val hintMessage = findViewById<LinearLayout>(R.id.historySearch)
         val clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
@@ -98,16 +114,17 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearIcon.isVisible = s?.isNotEmpty() == true
-                if (searchEditText.hasFocus() && s?.isEmpty() == true) {
+                if (searchEditText.hasFocus() && s.isNullOrEmpty()) {
+                    handler.removeCallbacks(searchRunnable)
                     showMessage(InputStatus.SUCCESS)
                     if (searchHistory.read().isNotEmpty()) hintMessage.visibility =View.VISIBLE
                 } else{
                     hintMessage.visibility =View.GONE
+                    searchDebounce()
                 }
                 historyList.adapter = SearchAdapter(searchHistory.read()) {
                     searchHistory.setTrack(it)
-                    val displayIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-                    startActivity(displayIntent)
+                    AudioPlayerActivity.startActivity(this@SearchActivity)
                 }
             }
 
@@ -121,8 +138,7 @@ class SearchActivity : AppCompatActivity() {
                         .isNotEmpty()) View.VISIBLE else View.GONE
             historyList.adapter = SearchAdapter(searchHistory.read()) {
                 searchHistory.setTrack(it)
-                val displayIntent = Intent(this, AudioPlayerActivity::class.java)
-                startActivity(displayIntent)
+                AudioPlayerActivity.startActivity(this)
             }
         }
         // Обработчик нажатия кнопки для очистки истории поиска и скрытия подсказки
@@ -145,15 +161,20 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun search() {
+        progressBar.visibility = View.VISIBLE
+        searchList.visibility = View.GONE
+        placeholder.visibility = View.GONE
         itunesService.search(searchEditText.text.toString())
             .enqueue(object : Callback<TrackResponse> {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onResponse(
                     call: Call<TrackResponse>, response: Response<TrackResponse>
                 ) {
+                    progressBar.visibility = View.GONE
                     if (response.code() == 200) {
                         tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
+                            searchList.visibility = View.VISIBLE
                             showMessage(InputStatus.SUCCESS)
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
@@ -172,6 +193,15 @@ class SearchActivity : AppCompatActivity() {
                     showMessage(InputStatus.ERROR)
                 }
             })
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
+        }
+        return current
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -221,5 +251,10 @@ class SearchActivity : AppCompatActivity() {
             Configuration.UI_MODE_NIGHT_NO -> false // Светлая тема
             else -> false
         }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY_MILLIS)
     }
 }
