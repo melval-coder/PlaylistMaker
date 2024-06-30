@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,8 +8,12 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.DARK_THEME_ENABLED
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.R.layout
 import com.practicum.playlistmaker.R.string
+import com.practicum.playlistmaker.SHARED_PREFERENCES
 
 class SettingsActivity : AppCompatActivity() {
 
