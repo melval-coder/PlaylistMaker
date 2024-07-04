@@ -1,11 +1,11 @@
-package com.practicum.playlistmaker.domain.useCase
+package com.practicum.playlistmaker.domain.controllers
 
 import com.practicum.playlistmaker.domain.PlayerInteractor
+import com.practicum.playlistmaker.domain.PlayerPresenter
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.domain.util.TimeFormat
-import com.practicum.playlistmaker.presentation.AudioPlayerActivity
 
-class PlayControlImpl(val mediaPlayer: PlayerInteractor, val playerPresenter: AudioPlayerActivity) :
+class PlayControlImpl(val mediaPlayer: PlayerInteractor, val playerPresenter: PlayerPresenter) :
     PlayControl {
 
     companion object {

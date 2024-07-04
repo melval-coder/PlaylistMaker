@@ -3,7 +3,6 @@ package com.practicum.playlistmaker.presentation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
@@ -24,18 +23,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.SHARED_PREFERENCES
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.data.network.SearchAPI
-import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.data.dto.TrackResponse
-import com.practicum.playlistmaker.data.InputStatus
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.practicum.playlistmaker.presentation.InputStatus
 
 class SearchActivity : AppCompatActivity() {
 

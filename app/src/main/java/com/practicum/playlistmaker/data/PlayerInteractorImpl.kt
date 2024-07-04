@@ -4,7 +4,7 @@ import android.media.MediaPlayer
 import com.practicum.playlistmaker.domain.PlayerInteractor
 import com.practicum.playlistmaker.domain.models.Track
 
-class Player : PlayerInteractor {
+class PlayerInteractorImpl : PlayerInteractor {
     private var mediaPlayer = MediaPlayer()
 
     override fun preparePlayer(

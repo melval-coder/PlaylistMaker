@@ -13,12 +13,13 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.domain.useCase.PlayControl
+import com.practicum.playlistmaker.domain.PlayerPresenter
+import com.practicum.playlistmaker.domain.controllers.PlayControl
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AudioPlayerActivity : AppCompatActivity() {
+class AudioPlayerActivity : AppCompatActivity(), PlayerPresenter {
     companion object {
         private const val DELAY_MILLIS = 25L
 
@@ -72,7 +73,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         playButton.setOnClickListener { playControl.playbackControl() }
     }
 
-    fun startPlayer() {
+    override fun startPlayer() {
         if (isDarkTheme()) {
             playButton.setImageResource(R.drawable.icon_pause_button_dark) // Используем иконку для тёмной темы
         } else {
@@ -83,7 +84,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         )
     }
 
-    fun pausePlayer() {
+    override fun pausePlayer() {
         if (isDarkTheme()) {
             playButton.setImageResource(R.drawable.icon_play_button_dark) // Используем иконку для тёмной темы
         } else {
@@ -95,19 +96,19 @@ class AudioPlayerActivity : AppCompatActivity() {
         return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
     }
 
-    fun progressTimeViewUpdate(progressTime: String) {
+    override fun progressTimeViewUpdate(progressTime: String) {
         progressTimeView.text = progressTime
     }
 
-    fun playButtonEnabled() {
+    override fun playButtonEnabled() {
         playButton.isEnabled = true
     }
 
-    fun postDelayed(runnable: Runnable) {
+    override fun postDelayed(runnable: Runnable) {
         mainThreadHandler?.postDelayed(runnable, DELAY_MILLIS)
     }
 
-    fun removeCallbacks(runnable: Runnable) {
+    override fun removeCallbacks(runnable: Runnable) {
         mainThreadHandler?.removeCallbacks(runnable)
     }
 

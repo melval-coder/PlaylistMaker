@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.domain.useCase
+package com.practicum.playlistmaker.domain.controllers
 
 import com.practicum.playlistmaker.domain.models.Track
 
