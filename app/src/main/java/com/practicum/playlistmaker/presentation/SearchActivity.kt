@@ -1,9 +1,8 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
@@ -23,11 +22,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.presentation.InputStatus
 
 class SearchActivity : AppCompatActivity() {
 
@@ -43,24 +41,17 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private var text: String = ""
-    private val itunesBaseUrl = "https://itunes.apple.com"
-    private val retrofit =
-        Retrofit.Builder()
-            .baseUrl(itunesBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
     private val searchHistory by lazy {
-        SearchHistory(this)
+        Creator.getHistoryRepository(this)
     }
     private val searchRunnable = Runnable { search() }
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
-    private val itunesService = retrofit.create(SearchAPI::class.java)
     private lateinit var searchEditText: EditText
     private lateinit var placeholder: LinearLayout
     private lateinit var searchList: RecyclerView
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var progressBar: ProgressBar
+    private val interactor = Creator.provideTrackInteractor()
     private val tracks = ArrayList<Track>()
     private val adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
@@ -83,7 +74,6 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
         searchEditText = findViewById(R.id.searchEditText)
         searchList = findViewById(R.id.recyclerViewSearch)
         placeholder = findViewById(R.id.placeholder)
@@ -102,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                handler.removeCallbacks(searchRunnable)
                 search()
                 return@setOnEditorActionListener true
             }
@@ -116,13 +107,15 @@ class SearchActivity : AppCompatActivity() {
                 clearIcon.isVisible = s?.isNotEmpty() == true
                 if (searchEditText.hasFocus() && s.isNullOrEmpty()) {
                     handler.removeCallbacks(searchRunnable)
+                    tracks.clear()
+                    adapter.notifyDataSetChanged()
                     showMessage(InputStatus.SUCCESS)
-                    if (searchHistory.read().isNotEmpty()) hintMessage.visibility =View.VISIBLE
+                    if (searchHistory.getTrackList().isNotEmpty()) hintMessage.visibility =View.VISIBLE
                 } else{
                     hintMessage.visibility =View.GONE
                     searchDebounce()
                 }
-                historyList.adapter = SearchAdapter(searchHistory.read()) {
+                historyList.adapter = SearchAdapter(searchHistory.getTrackList()) {
                     searchHistory.setTrack(it)
                     AudioPlayerActivity.startActivity(this@SearchActivity)
                 }
@@ -134,16 +127,16 @@ class SearchActivity : AppCompatActivity() {
         // При изменении фокуса на searchEditText отображается подсказка, если поле пустое и есть история поиска
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
             hintMessage.visibility =
-                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.read()
+                if (hasFocus && searchEditText.text.isEmpty() && searchHistory.getTrackList()
                         .isNotEmpty()) View.VISIBLE else View.GONE
-            historyList.adapter = SearchAdapter(searchHistory.read()) {
+            historyList.adapter = SearchAdapter(searchHistory.getTrackList()) {
                 searchHistory.setTrack(it)
                 AudioPlayerActivity.startActivity(this)
             }
         }
         // Обработчик нажатия кнопки для очистки истории поиска и скрытия подсказки
         clearHistoryButton.setOnClickListener {
-            searchHistory.clear(sharedPreferences)
+            searchHistory.clear()
             hintMessage.visibility = View.GONE
         }
 
@@ -164,35 +157,25 @@ class SearchActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         searchList.visibility = View.GONE
         placeholder.visibility = View.GONE
-        itunesService.search(searchEditText.text.toString())
-            .enqueue(object : Callback<TrackResponse> {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(
-                    call: Call<TrackResponse>, response: Response<TrackResponse>
-                ) {
-                    progressBar.visibility = View.GONE
-                    if (response.code() == 200) {
-                        tracks.clear()
-                        if (response.body()?.results?.isNotEmpty() == true) {
-                            searchList.visibility = View.VISIBLE
-                            showMessage(InputStatus.SUCCESS)
-                            tracks.addAll(response.body()?.results!!)
-                            adapter.notifyDataSetChanged()
-                        }
-                        if (tracks.isEmpty()) {
-                            showMessage(InputStatus.EMPTY)
-                        }
-                    } else {
-                        showMessage(
-                            InputStatus.ERROR
-                        )
-                    }
+        interactor.searchTracks(searchEditText.text.toString(), {
+            handler.post {
+                tracks.clear()
+                progressBar.visibility = View.GONE
+                if (it.isNotEmpty()) {
+                    searchList.visibility = View.VISIBLE
+                    tracks.addAll(it)
+                    adapter.notifyDataSetChanged()
+                    showMessage(InputStatus.SUCCESS)
+                } else {
+                    showMessage(InputStatus.EMPTY)
                 }
-
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    showMessage(InputStatus.ERROR)
-                }
-            })
+            }
+        }, {
+            handler.post {
+                progressBar.visibility = View.GONE
+                showMessage(InputStatus.ERROR)
+            }
+        })
     }
 
     private fun clickDebounce(): Boolean {
@@ -222,8 +205,6 @@ class SearchActivity : AppCompatActivity() {
 
         buttonRepeat.visibility = View.GONE
         placeholder.visibility = View.VISIBLE
-        tracks.clear()
-        adapter.notifyDataSetChanged()
 
         when (status) {
             InputStatus.SUCCESS -> {
